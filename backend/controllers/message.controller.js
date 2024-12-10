@@ -27,8 +27,8 @@ export const getConversation = async (req, res) => {
   try {
     const messages = await Message.find({
       $or: [
-        { sender: req.user._id, reciever: userId },
-        { sender: userId, reciever: req.user._id },
+        { sender: req.user._id, receiver: userId },
+        { sender: userId, receiver: req.user._id },
       ],
     }).sort("createdAt");
 
