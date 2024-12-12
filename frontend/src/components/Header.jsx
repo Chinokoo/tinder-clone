@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Flame, LogOut, Menu, User } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
@@ -8,6 +8,15 @@ const Header = () => {
   const [dropDown, setDropDown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropDownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropDownRef.current && !dropDownRef.current.contains(event.target)) {
+        setDropDown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     // header component
@@ -85,6 +94,51 @@ const Header = () => {
           </div>
         </div>
       </div>
+      {/* mobile menu */}
+      {mobileMenuOpen && (
+        // menu container
+        <div className="md:hidden bg-pink-500">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {authUser ? (
+              <>
+                <Link
+                  to={"/profile"}
+                  className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-pink-700"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={() => {
+                    logout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-pink-700"
+                >
+                  logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to={"/login"}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-pink-700"
+                >
+                  Login
+                </Link>
+                <Link
+                  to={"/register"}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-pink-700"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 };

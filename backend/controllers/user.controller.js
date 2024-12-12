@@ -10,6 +10,14 @@ export const updateUser = async (req, res) => {
       //base64 format.
       try {
         if (image.startsWith("data:image")) {
+          // Delete the old image from Cloudinary
+          if (req.user.image) {
+            const oldImagePublicId = req.user.image
+              .split("/")
+              .pop()
+              .split(".")[0];
+            await cloudinary.uploader.destroy(oldImagePublicId);
+          }
           const uploadResponse = await cloudinary.uploader.upload(image);
           updatedData.image = uploadResponse.secure_url;
         }
@@ -19,11 +27,9 @@ export const updateUser = async (req, res) => {
       }
     }
 
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user._id,
-      updatedData,
-      { new: true }
-    );
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, updatedData, {
+      new: true,
+    });
 
     res.status(200).json({ success: true, user: updatedUser });
   } catch (error) {
