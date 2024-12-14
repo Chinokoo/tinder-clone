@@ -90,5 +90,8 @@ export const getUserProfiles = async (req, res) => {
       success: true,
       users,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log("Error in the getUserProfiles");
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
 };
