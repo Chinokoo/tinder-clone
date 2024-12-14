@@ -47,6 +47,12 @@ const userSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    matches: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true }
 );

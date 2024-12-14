@@ -35,7 +35,7 @@ export const swipeRight = async (req, res) => {
 export const swipeLeft = async (req, res) => {
   try {
     const { dislikedUserId } = req.params;
-    const currentUser = await User.findById(dislikedUserId);
+    const currentUser = await User.findById(req.user.id);
 
     if (!currentUser.dislikes.includes(dislikedUserId)) {
       currentUser.dislikes.push(dislikedUserId);
@@ -43,7 +43,7 @@ export const swipeLeft = async (req, res) => {
     }
     res.status(200).json({ success: true, user: currentUser });
   } catch (error) {
-    console, log("Error in swipeLeft", error);
+    console.log("Error in swipeLeft", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
