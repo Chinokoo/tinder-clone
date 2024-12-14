@@ -3,7 +3,8 @@ import SideBar from "../components/SideBar";
 import { useMatchStore } from "../store/useMatchStore";
 import Header from "../components/Header";
 import { Frown } from "lucide-react";
-//import { useAuthStore } from "../store/useAuthStore";
+import SwipeArea from "./../components/SwipeArea";
+import SwipeFeedBack from "./../components/SwipeFeedBack";
 
 const HomePage = () => {
   const { loadingProfiles, userProfiles, getUserProfiles } = useMatchStore();
@@ -18,7 +19,12 @@ const HomePage = () => {
       <div className="flex flex-glow flex-col overflow-hidden w-full">
         <Header />
         <main className="flex flex-glow flex-col gap-10 justify-center items-center p-4 relative overflow-hidden ">
-          {userProfiles.length > 0 && !loadingProfiles && <>Users found</>}
+          {userProfiles.length > 0 && !loadingProfiles && (
+            <>
+              <SwipeFeedBack />
+              <SwipeArea />
+            </>
+          )}
 
           {userProfiles.length === 0 && !loadingProfiles && <NoMoreProfiles />}
 
