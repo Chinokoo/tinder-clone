@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
+import { initializeSocket } from "../socket/socket.client";
 
 //managing the global state of the authentication store
 export const useAuthStore = create((set) => ({
@@ -16,6 +17,8 @@ export const useAuthStore = create((set) => ({
     try {
       const response = await axiosInstance.get("/auth/me");
       set({ authUser: response.data.user });
+      //connecting to the socket
+      initializeSocket(response.data.user._id);
     } catch (error) {
       set({ authUser: null });
       console.log(error.message);
@@ -30,6 +33,9 @@ export const useAuthStore = create((set) => ({
       const response = await axiosInstance.post("/auth/signup", signupData);
       //setting the user object in the global state
       set({ authUser: response.data.user });
+      //connecting to the socket
+      initializeSocket(response.data.user._id);
+
       toast.success("Account created successfully");
     } catch (error) {
       console.log(error.message);
@@ -42,9 +48,13 @@ export const useAuthStore = create((set) => ({
   login: async (loginData) => {
     try {
       set({ loading: true });
+
       const response = await axiosInstance.post("/auth/login", loginData);
+
       //setting the user object in the global state
       set({ authUser: response.data.user });
+      //connecting to the socket
+      initializeSocket(response.data.user._id);
       toast.success("Logged in successfully");
     } catch (error) {
       toast.error(error.response.data.message);

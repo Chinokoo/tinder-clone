@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import bodyParser from "body-parser";
+import { createServer } from "http";
 
 //routes
 import authRouter from "./routes/auth.route.js";
@@ -10,16 +11,21 @@ import messageRouter from "./routes/message.route.js";
 import userRouter from "./routes/user.route.js";
 import matchRouter from "./routes/match.route.js";
 import { connectToDB } from "./config/database_connection.js";
+import { initializeSocket } from "./socket/socket.server.js";
 
 //config
 dotenv.config({ path: "./.env" });
 //express
 const app = express();
+const httpServer = createServer(app);
+
+//initializing socket io
+initializeSocket(httpServer);
 
 //middlewares
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
@@ -34,7 +40,8 @@ app.use("/api/messages", messageRouter);
 
 //server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+//change to http server.
+httpServer.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   connectToDB();
 });
