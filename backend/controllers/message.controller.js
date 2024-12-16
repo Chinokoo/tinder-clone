@@ -1,3 +1,4 @@
+import { getConnectedUsers, getIO } from "../socket/socket.server.js";
 import Message from "./../models/message.model.js";
 
 export const sendMessage = async (req, res) => {
@@ -11,6 +12,15 @@ export const sendMessage = async (req, res) => {
     });
 
     //todo: send message to reciever in real time.
+    const io = getIO();
+    const getConnectedUsers = getConnectedUsers();
+    const recieverSocketId = getConnectedUsers.get(receiverId);
+
+    if (recieverSocketId) {
+      io.to(recieverSocketId).emit("newMessage", {
+        message: newMessage,
+      });
+    }
 
     res.status(201).json({ success: true, message: newMessage });
   } catch (error) {

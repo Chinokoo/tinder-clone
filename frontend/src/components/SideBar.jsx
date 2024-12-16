@@ -1,6 +1,7 @@
 import { Heart, X, Loader, MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useMatchStore } from "../store/useMatchStore";
+import { Link } from "react-router-dom";
 const SideBar = () => {
   //opening the sidebar
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +39,21 @@ const SideBar = () => {
             ) : matches.length === 0 ? (
               <NoMatchesFound />
             ) : (
-              "hey"
+              matches.map((match) => (
+                <Link key={match._id} to={`/chat/${match._id}`}>
+                  <div className="flex items-center mb-4 cursor-pointer hover:bg-pink-50 p-2 rounded-lg transition-colors duration-300">
+                    <img
+                      src={match.image || "/avatar.png"}
+                      alt="User avatar"
+                      className="size-12 object-cover rounded-full mr-3 border-2 border-pink-300"
+                    />
+
+                    <h3 className="font-semibold text-gray-800">
+                      {match.name}
+                    </h3>
+                  </div>
+                </Link>
+              ))
             )}
           </div>
         </div>

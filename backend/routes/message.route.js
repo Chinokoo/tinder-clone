@@ -6,6 +6,7 @@ import {
 } from "../controllers/message.controller.js";
 const messageRouter = express.Router();
 
+//middleware to use the auth function
 messageRouter.use(auth);
 
 messageRouter.post("/send", sendMessage);

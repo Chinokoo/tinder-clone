@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
-import { initializeSocket } from "../socket/socket.client";
+import { disconnectSocket, initializeSocket } from "../socket/socket.client";
 
 //managing the global state of the authentication store
 export const useAuthStore = create((set) => ({
@@ -66,6 +66,7 @@ export const useAuthStore = create((set) => ({
   logout: async () => {
     try {
       const response = await axiosInstance.post("/auth/logout");
+      disconnectSocket();
       if (response.status === 200) set({ authUser: null });
     } catch (error) {
       console.log(error.message);

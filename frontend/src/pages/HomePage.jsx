@@ -5,20 +5,36 @@ import Header from "../components/Header";
 import { Frown } from "lucide-react";
 import SwipeArea from "./../components/SwipeArea";
 import SwipeFeedBack from "./../components/SwipeFeedBack";
+import { useAuthStore } from "../store/useAuthStore";
 
 const HomePage = () => {
-  const { loadingProfiles, userProfiles, getUserProfiles } = useMatchStore();
+  const {
+    loadingProfiles,
+    userProfiles,
+    getUserProfiles,
+    subscribeToNewMatches,
+    unsubscribeFromNewMatches,
+  } = useMatchStore();
+
+  const { authUser } = useAuthStore();
 
   useEffect(() => {
     getUserProfiles();
   }, [getUserProfiles]);
+
+  useEffect(() => {
+    authUser && subscribeToNewMatches();
+    return () => {
+      unsubscribeFromNewMatches();
+    };
+  }, [subscribeToNewMatches, unsubscribeFromNewMatches, authUser]);
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-gradient-to-br from-pink-100 to-purple-100 overflow-hidden">
       <SideBar />
       <div className="flex flex-glow flex-col overflow-hidden w-full">
         <Header />
-        <main className="flex flex-glow flex-col gap-10 justify-center items-center p-4 relative overflow-hidden ">
+        <main className="flex flex-glow flex-col gap-10 justify-center items-center p-4 relative overflow-hidden">
           {userProfiles.length > 0 && !loadingProfiles && (
             <>
               <SwipeFeedBack />
@@ -37,16 +53,19 @@ const HomePage = () => {
 
 export default HomePage;
 
+//when profiles are finished
 const NoMoreProfiles = () => {
-  <div className="flex flex-col items-center justify-center h-full text-center p-8">
-    <Frown size={80} className="text-pink-400 mb-6" />
-    <h2 className="text-3xl font-bold text-gray-800 mb-4">
-      Woah there, take you time
-    </h2>
-    <p className="text-xl text-gray-600 mb-6">
-      Time to chill and touch some grass
-    </p>
-  </div>;
+  return (
+    <div className="flex flex-col items-center justify-center h-full text-center p-8">
+      <Frown size={80} className="text-pink-400 mb-6" />
+      <h2 className="text-3xl font-bold text-gray-800 mb-4">
+        Woah there, Speedy fingers
+      </h2>
+      <p className="text-xl text-gray-600 mb-6">
+        Take your time, your match is one swipe away.
+      </p>
+    </div>
+  );
 };
 
 //skeleton UI
