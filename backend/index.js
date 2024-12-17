@@ -16,7 +16,7 @@ import { initializeSocket } from "./socket/socket.server.js";
 
 //config
 dotenv.config({ path: "./.env" });
-path.resolve();
+const __dirname = path.resolve();
 //express
 const app = express();
 const httpServer = createServer(app);
@@ -39,6 +39,14 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/matches", matchRouter);
 app.use("/api/messages", messageRouter);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.resolve(__dirname, "/client/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+  });
+}
 
 //server
 const PORT = process.env.PORT || 5000;
