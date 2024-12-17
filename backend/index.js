@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { createServer } from "http";
+import path from "path";
 
 //routes
 import authRouter from "./routes/auth.route.js";
@@ -15,6 +16,7 @@ import { initializeSocket } from "./socket/socket.server.js";
 
 //config
 dotenv.config({ path: "./.env" });
+path.resolve();
 //express
 const app = express();
 const httpServer = createServer(app);

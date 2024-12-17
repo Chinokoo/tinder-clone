@@ -14,7 +14,7 @@ export const initializeSocket = (httpServer) => {
 
   io.use((socket, next) => {
     const userId = socket.handshake.auth.userId;
-    if (!userId) return next(new Error("Invalid user ID"));
+    if (!userId) return next(console.log("Invalid user ID"));
 
     socket.userId = userId;
     next();

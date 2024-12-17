@@ -13,8 +13,8 @@ export const sendMessage = async (req, res) => {
 
     //todo: send message to reciever in real time.
     const io = getIO();
-    const getConnectedUsers = getConnectedUsers();
-    const recieverSocketId = getConnectedUsers.get(receiverId);
+    const connectedUsers = getConnectedUsers();
+    const recieverSocketId = connectedUsers.get(receiverId);
 
     if (recieverSocketId) {
       io.to(recieverSocketId).emit("newMessage", {
@@ -33,12 +33,12 @@ export const sendMessage = async (req, res) => {
 };
 
 export const getConversation = async (req, res) => {
-  const { userId } = req.params;
+  const { id } = req.params;
   try {
     const messages = await Message.find({
       $or: [
-        { sender: req.user._id, receiver: userId },
-        { sender: userId, receiver: req.user._id },
+        { sender: req.user.id, receiver: id },
+        { sender: id, receiver: req.user.id },
       ],
     }).sort("createdAt");
 
