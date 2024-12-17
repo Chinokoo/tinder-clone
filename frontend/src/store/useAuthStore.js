@@ -21,6 +21,7 @@ export const useAuthStore = create((set) => ({
       initializeSocket(response.data.user._id);
     } catch (error) {
       set({ authUser: null });
+      disconnectSocket();
       console.log(error.message);
     } finally {
       set({ checkingAuth: false });
@@ -38,8 +39,8 @@ export const useAuthStore = create((set) => ({
 
       toast.success("Account created successfully");
     } catch (error) {
-      console.log(error.message);
-      toast.error(error.response.data.message);
+      console.log(error.response.data.message);
+      toast.error("something went wrong when creating an account.");
     } finally {
       set({ loading: false });
     }
@@ -57,7 +58,8 @@ export const useAuthStore = create((set) => ({
       initializeSocket(response.data.user._id);
       toast.success("Logged in successfully");
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.log(error);
+      toast.error("Something went wrong when logging in");
     } finally {
       set({ loading: false });
     }
@@ -66,11 +68,12 @@ export const useAuthStore = create((set) => ({
   logout: async () => {
     try {
       const response = await axiosInstance.post("/auth/logout");
-      disconnectSocket();
       if (response.status === 200) set({ authUser: null });
+      disconnectSocket();
     } catch (error) {
-      console.log(error.message);
-      toast.error(error.response.data.message || "something went wrong");
+      console.log(error.response.data.message);
+      toast.error("something went wrong when logging out");
     }
   },
+  setAuthUser: (user) => set({ authUser: user }),
 }));

@@ -72,7 +72,7 @@ export const useMatchStore = create((set) => ({
       });
     } catch (error) {
       console.log(error);
-      toast.error(error);
+      toast.error("Something went wrong");
     }
   },
   unsubscribeFromNewMatches: () => {
@@ -81,7 +81,9 @@ export const useMatchStore = create((set) => ({
       socket.off("newMatch");
     } catch (error) {
       console.log(error);
-      toast.error(error);
+      const socket = getSocket();
+      socket.off("newMatch");
+      toast.error("Something went wrong");
     }
   },
 }));

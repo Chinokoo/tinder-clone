@@ -13,7 +13,11 @@ export const useMessageStore = create((set) => ({
       set((state) => ({
         messages: [
           ...state.messages,
-          { sender: useAuthStore.getState().authUser._id, content },
+          {
+            _id: Date.now(),
+            sender: useAuthStore.getState().authUser._id,
+            content,
+          },
         ],
       }));
 
@@ -24,18 +28,19 @@ export const useMessageStore = create((set) => ({
 
       console.log("message sent", res.data);
     } catch (error) {
-      toast.error(error.response.data.message || "Something went wrong");
+      console.log(error);
+      toast.error("Something went wrong when sending a message");
     }
   },
   //get messages function
   getMessages: async (userId) => {
     try {
       set({ loading: true });
-      const res = await axiosInstance.get(`/messages/conversation/${userId}`);
+      const res = await axiosInstance.get("/messages/conversation/" + userId);
       set({ messages: res.data.messages });
     } catch (error) {
       console.log(error);
-      toast.error(error);
+      toast.error("something went wrong when getting messages");
     } finally {
       set({ loading: false });
     }

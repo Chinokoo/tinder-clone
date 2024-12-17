@@ -1,5 +1,6 @@
 import io from "socket.io-client";
-const SOCKET_URL = "http://localhost:3000";
+const SOCKET_URL =
+  import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
 
 let socket = null;
 

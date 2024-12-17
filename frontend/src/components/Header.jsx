@@ -69,13 +69,13 @@ const Header = () => {
             ) : (
               <>
                 <Link
-                  to={"/login"}
+                  to={"/auth"}
                   className="text-white hover:text-pink-200 transition duration-150 ease-in-out"
                 >
                   Login
                 </Link>
                 <Link
-                  to={"/register"}
+                  to={"/auth"}
                   className="bg-white text-pink-600 px-4 py-2 rounded-full font-medium hover:bg-pink-100 transition duration-150 ease-in-out"
                 >
                   Sign Up
