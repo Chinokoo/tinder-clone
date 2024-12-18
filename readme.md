@@ -84,6 +84,7 @@ This project is licensed under the [MIT License](LICENSE).
 - [Eslint](https://eslint.org/)
 - [MongoDb](https://Mongodb.com)
 - [Prettier](https://prettier.io/)
+- [cloudinary](https://www.cloudinary.com)
 
 ## Project Structure
 
