@@ -32,6 +32,23 @@ To install and set up the project locally, follow these steps:
    - For the frontend: `cd frontend && npm run dev`
    - For the backend: `npm run dev`
 
+## env variables
+
+-- create an .env file in your home directory and configure the following.
+
+- PORT= "your port"
+- MONGODB_URI="your Mongodb url"
+
+- JWT_SECRET_KEY= "your secret key"
+- BYCRYPT_SALT="your salt value"
+
+- NODE_ENV=development
+
+- CLOUDINARY_NAME="cloudinary name"
+- CLOUDINARY_API_KEY="cloudinary api key"
+
+- CLOUDINARY_SECRET_KEY="your cloudinary secret key"
+
 ## Usage
 
 To use the project, follow these steps:
